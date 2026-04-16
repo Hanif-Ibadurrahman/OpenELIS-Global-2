@@ -1,0 +1,41 @@
+.surveillance-filters {
+  margin: 0 40px 24px;
+  padding: 1rem 1.5rem;
+}
+
+.surveillance-filter-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cds-text-primary);
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.surveillance-filter-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 0;
+}
+
+.surveillance-filter-actions button {
+  width: 100%;
+  text-align: center;
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  border: 1px solid;
+  cursor: pointer;
+}
+
+.surveillance-btn-search {
+  background-color: #242424;
+  border-color: #242424;
+  color: #ffffff;
+}
+
+.surveillance-btn-create {
+  background-color: #16b3ac;
+  border-color: #16b3ac;
+  color: #ffffff;
+}

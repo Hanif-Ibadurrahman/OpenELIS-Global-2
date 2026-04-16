@@ -39,11 +39,11 @@ services:
             
     oe.openelis.org:
         container_name: openelisglobal-webapp 
-        # build:
-        #     context: .
-        #     dockerfile: Dockerfile.dev
-        image: itechuw/openelis-global-2-dev:develop  
-       # platform: linux/amd64
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        # image: itechuw/openelis-global-2-dev:develop  
+        # platform: linux/amd64
         depends_on:
             - db.openelis.org
             - certs
@@ -116,7 +116,10 @@ services:
 
          
     frontend.openelis.org:
-        image: itechuw/openelis-global-2-frontend-dev:develop
+        # image: itechuw/openelis-global-2-frontend-dev:develop
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
         container_name: openelisglobal-front-end
        # platform: linux/amd64
         networks:

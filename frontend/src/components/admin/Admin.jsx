@@ -36,6 +36,7 @@ import {
   Search,
   ConnectionSignal,
   Calendar,
+  Notification,
 } from "@carbon/icons-react";
 import CalculatedValue from "./calculatedValue/CalculatedValueForm";
 import {
@@ -100,6 +101,7 @@ import {
 import ExternalConnectionMenu from "./externalConnections/ExternalConnectionMenu";
 import ExternalConnectionAddModify from "./externalConnections/ExternalConnectionAddModify";
 import DatabaseCleaning from "./databaseCleaning/DatabaseCleaning";
+import SurveillanceConfiguration from "./surveillanceConfiguration/SurveillanceConfiguration";
 import { TrashCan } from "@carbon/icons-react";
 import { getFromOpenElisServer } from "../utils/Utils";
 
@@ -161,6 +163,16 @@ function Admin() {
               <FormattedMessage id="sidenav.label.admin.testmgt.calculated" />
             </SideNavMenuItem>
           </SideNavMenu>
+          <SideNavLink
+            data-cy="surveillanceConfig"
+            renderIcon={Notification}
+            onClick={handleNavigation(`${path}/SurveillanceConfiguration`)}
+          >
+            <FormattedMessage
+              id="sidenav.label.admin.surveillance"
+              defaultMessage={"Surveillance Configuration"}
+            />
+          </SideNavLink>
           <SideNavLink
             renderIcon={ListDropdown}
             onClick={handleNavigation(`${path}/AnalyzerTestName`)}
@@ -691,6 +703,10 @@ function Admin() {
           component={ExternalConnectionAddModify}
         />
         <Route path={`${path}/DatabaseCleaning`} component={DatabaseCleaning} />
+        <Route
+          path={`${path}/SurveillanceConfiguration`}
+          component={SurveillanceConfiguration}
+        />
       </Switch>
     </>
   );

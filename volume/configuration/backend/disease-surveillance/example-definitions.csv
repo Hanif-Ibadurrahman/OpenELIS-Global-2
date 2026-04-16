@@ -1,0 +1,5 @@
+definitionId,icdCode,version,description,effectiveDate,isActive
+1,A90,1,Dengue Fever case definition v1,2024-01-01,Y
+2,B50,1,Malaria (P. falciparum) case definition v1,2024-01-01,Y
+3,A92.0,1,Chikungunya case definition v1,2024-01-01,Y
+4,A27,1,Leptospirosis case definition v1,2024-01-01,Y

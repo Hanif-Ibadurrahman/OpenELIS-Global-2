@@ -19,6 +19,7 @@ import org.openelisglobal.common.services.registration.interfaces.IResultUpdate;
 import org.openelisglobal.common.util.ConfigurationProperties;
 import org.openelisglobal.common.util.ConfigurationProperties.Property;
 import org.openelisglobal.dataexchange.resultreporting.ResultReportingUpdate;
+import org.openelisglobal.surveillance.service.DiseaseSurveillanceUpdate;
 
 public class ValidationUpdateRegister {
     public static List<IResultUpdate> getRegisteredUpdaters() {
@@ -27,6 +28,10 @@ public class ValidationUpdateRegister {
         // kluge at this point, should be discoverable
         if (shouldReport(Property.reportResults)) {
             updaters.add(new ResultReportingUpdate());
+        }
+
+        if (shouldReport(Property.DISEASE_SURVEILLANCE)) {
+            updaters.add(new DiseaseSurveillanceUpdate());
         }
 
         /*****

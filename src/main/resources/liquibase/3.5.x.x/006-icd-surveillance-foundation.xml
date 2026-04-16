@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+  <!-- ICD Versions table -->
+  <changeSet id="006-01-create-icd-versions" author="surveillance">
+    <createTable tableName="icd_versions">
+      <column name="id" type="SERIAL">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="code" type="VARCHAR(50)">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="name" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="release_date" type="DATE"/>
+      <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated" type="TIMESTAMP" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <!-- ICD Codes table -->
+  <changeSet id="006-02-create-icd-codes" author="surveillance">
+    <createTable tableName="icd_codes">
+      <column name="id" type="SERIAL">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="version_id" type="INTEGER">
+        <constraints nullable="false" foreignKeyName="fk_icd_codes_version" references="icd_versions(id)"/>
+      </column>
+      <column name="code" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="title" type="VARCHAR(1024)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="TEXT"/>
+      <column name="parent_id" type="INTEGER">
+        <constraints foreignKeyName="fk_icd_codes_parent" references="icd_codes(id)"/>
+      </column>
+      <column name="level" type="INTEGER"/>
+      <column name="is_leaf" type="BOOLEAN" defaultValueBoolean="true">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="VARCHAR(25)" defaultValue="active">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated" type="TIMESTAMP" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <!-- Unique index on version_id + code -->
+  <changeSet id="006-03-icd-codes-unique-index" author="surveillance">
+    <createIndex tableName="icd_codes" indexName="idx_icd_codes_version_code" unique="true">
+      <column name="version_id"/>
+      <column name="code"/>
+    </createIndex>
+  </changeSet>
+
+  <!-- Indexes for ICD codes -->
+  <changeSet id="006-04-icd-codes-indexes" author="surveillance">
+    <createIndex tableName="icd_codes" indexName="idx_icd_codes_version_parent">
+      <column name="version_id"/>
+      <column name="parent_id"/>
+    </createIndex>
+    <createIndex tableName="icd_codes" indexName="idx_icd_codes_code">
+      <column name="code"/>
+    </createIndex>
+    <createIndex tableName="icd_codes" indexName="idx_icd_codes_status">
+      <column name="status"/>
+    </createIndex>
+  </changeSet>
+
+  <!-- Disease Case Definition table -->
+  <changeSet id="006-05-create-disease-case-definition" author="surveillance">
+    <createTable tableName="disease_case_definition">
+      <column name="id" type="SERIAL">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="icd_code" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="version" type="INTEGER" defaultValueNumeric="1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="VARCHAR(1024)"/>
+      <column name="effective_date" type="DATE"/>
+      <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated" type="TIMESTAMP" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <!-- Index for disease_case_definition -->
+  <changeSet id="006-06-disease-case-definition-index" author="surveillance">
+    <createIndex tableName="disease_case_definition" indexName="idx_disease_case_def_icd_code">
+      <column name="icd_code"/>
+    </createIndex>
+  </changeSet>
+
+  <!-- Disease Case Condition table (holds rule groups + conditions) -->
+  <changeSet id="006-07-create-disease-case-condition" author="surveillance">
+    <createTable tableName="disease_case_condition">
+      <column name="id" type="SERIAL">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="definition_id" type="INTEGER">
+        <constraints nullable="false" foreignKeyName="fk_condition_definition" references="disease_case_definition(id)"/>
+      </column>
+      <column name="rule_group" type="INTEGER" defaultValueNumeric="1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="operator" type="VARCHAR(5)" defaultValue="AND">
+        <constraints nullable="false"/>
+      </column>
+      <column name="test_name" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="result_type" type="VARCHAR(5)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="result_value" type="VARCHAR(255)"/>
+      <column name="numeric_operator" type="VARCHAR(5)"/>
+      <column name="numeric_value" type="NUMERIC(18,4)"/>
+      <column name="last_updated" type="TIMESTAMP" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <!-- Index for disease_case_condition -->
+  <changeSet id="006-08-disease-case-condition-index" author="surveillance">
+    <createIndex tableName="disease_case_condition" indexName="idx_disease_case_cond_def">
+      <column name="definition_id"/>
+    </createIndex>
+  </changeSet>
+
+  <!-- Disease Case Evaluation table -->
+  <changeSet id="006-09-create-disease-case-evaluation" author="surveillance">
+    <createTable tableName="disease_case_evaluation">
+      <column name="id" type="SERIAL">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="icd_code" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="sample_id" type="VARCHAR(50)"/>
+      <column name="patient_id" type="VARCHAR(50)"/>
+      <column name="region_id" type="VARCHAR(50)"/>
+      <column name="evaluation_date" type="TIMESTAMP" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_confirmed" type="BOOLEAN" defaultValueBoolean="false">
+        <constraints nullable="false"/>
+      </column>
+      <column name="matched_conditions" type="TEXT"/>
+      <column name="definition_id" type="INTEGER">
+        <constraints foreignKeyName="fk_evaluation_definition" references="disease_case_definition(id)"/>
+      </column>
+      <column name="last_updated" type="TIMESTAMP" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <!-- Aggregate index for disease_case_evaluation -->
+  <changeSet id="006-10-disease-case-evaluation-indexes" author="surveillance">
+    <createIndex tableName="disease_case_evaluation" indexName="idx_disease_eval_aggregate">
+      <column name="icd_code"/>
+      <column name="evaluation_date"/>
+      <column name="region_id"/>
+    </createIndex>
+    <createIndex tableName="disease_case_evaluation" indexName="idx_disease_eval_sample">
+      <column name="sample_id"/>
+    </createIndex>
+  </changeSet>
+
+  <!-- Add threshold and notification columns to disease_case_definition -->
+  <changeSet id="006-11-add-threshold-columns" author="surveillance">
+    <addColumn tableName="disease_case_definition">
+      <column name="time_range" type="VARCHAR(20)"/>
+    </addColumn>
+    <addColumn tableName="disease_case_definition">
+      <column name="threshold_type" type="VARCHAR(20)"/>
+    </addColumn>
+    <addColumn tableName="disease_case_definition">
+      <column name="threshold_value" type="NUMERIC(18,4)"/>
+    </addColumn>
+    <addColumn tableName="disease_case_definition">
+      <column name="next_notification" type="TIMESTAMP"/>
+    </addColumn>
+  </changeSet>
+
+  <!-- Disease Notification Recipients table -->
+  <changeSet id="006-12-create-disease-notification-recipients" author="surveillance">
+    <createTable tableName="disease_notification_recipients">
+      <column name="id" type="SERIAL">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="definition_id" type="INTEGER">
+        <constraints nullable="false" foreignKeyName="fk_notification_recipients_definition" references="disease_case_definition(id)"/>
+      </column>
+      <column name="person_id" type="NUMERIC(10,0)">
+        <constraints nullable="false" foreignKeyName="fk_notification_recipients_person" references="person(id)"/>
+      </column>
+      <column name="notification_type" type="VARCHAR(10)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <!-- Index for disease_notification_recipients -->
+  <changeSet id="006-13-disease-notification-recipients-index" author="surveillance">
+    <createIndex tableName="disease_notification_recipients" indexName="idx_notification_recipients_definition">
+      <column name="definition_id"/>
+    </createIndex>
+    <createIndex tableName="disease_notification_recipients" indexName="idx_notification_recipients_person">
+      <column name="person_id"/>
+    </createIndex>
+  </changeSet>
+
+</databaseChangeLog>

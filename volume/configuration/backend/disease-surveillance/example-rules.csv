@@ -1,0 +1,9 @@
+ruleId,icdCode,ruleGroup,operator,testName,resultType,resultValue,numericOperator,numericValue
+1,A90,1,,NS1 antigen,D,Positive,,
+2,A90,1,OR,IgM dengue,D,Positive,,
+3,A90,2,,Platelet Count,N,,,LT,100000
+4,B50,1,,RDT malaria,D,Positive,,
+5,B50,1,OR,PCR malaria,D,Positive,,
+6,A92.0,1,,PCR chikungunya,D,Positive,,
+7,A27,1,,MAT leptospira,D,Positive,,
+8,A27,1,OR,PCR leptospirosis,D,Positive,,

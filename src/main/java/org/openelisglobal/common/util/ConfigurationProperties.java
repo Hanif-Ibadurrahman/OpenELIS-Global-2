@@ -284,7 +284,8 @@ public abstract class ConfigurationProperties {
         ORDER_ENTRY_WORKFLOW_TYPE("orderEntryWorkflowType", "text"), // Controls order entry workflow: "Clinical",
                                                                      // "Environmental", or "Both"
         ELECTRONIC_SIGNATURE_ENABLED("electronicSignatureEnabled", "text"), // 21 CFR Part 11 e-signatures
-        ESIG_SESSION_TIMEOUT_MINUTES("esigSessionTimeoutMinutes", "text"); // signing session inactivity timeout
+        ESIG_SESSION_TIMEOUT_MINUTES("esigSessionTimeoutMinutes", "text"), // signing session inactivity timeout
+        DISEASE_SURVEILLANCE("diseaseSurveillance", "text"); // Enable disease surveillance evaluation on result confirmation
 
         // visible on
         // the ui

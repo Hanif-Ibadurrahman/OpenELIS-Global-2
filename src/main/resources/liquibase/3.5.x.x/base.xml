@@ -37,6 +37,12 @@
 
   <!-- Sequence for auto-generating sampling site codes -->
   <include relativeToChangelogFile="true" file="004-create-site-code-sequence.xml"/>
+   
+  <!-- Surveillance menu for disease monitoring -->
+  <include relativeToChangelogFile="true" file="005-surveillance-menu.xml"/>
+
+  <!-- ICD master tables + disease case rule/evaluation tables -->
+  <include relativeToChangelogFile="true" file="006-icd-surveillance-foundation.xml"/>
 
    <!-- Sample shipping management -->
   <include relativeToChangelogFile="true" file="shipment-001-create-shipping-box-table.xml"/>

@@ -157,6 +157,9 @@ const FreezerMonitoringDashboard = lazyWithRetry(
 import ProgramDashboard from "./components/program/programDashboard.jsx";
 import ProgramCaseView from "./components/program/programCaseView.jsx";
 import SampleManagement from "./components/sampleManagement/SampleManagement";
+const Surveillance = lazyWithRetry(
+  () => import("./components/surveillance/Surveillance"),
+);
 const ShipmentReport = lazyWithRetry(
   () => import("./components/shipment/ShipmentReport"),
 );
@@ -590,6 +593,16 @@ export default function App() {
                     </RouteErrorBoundary>
                   )}
                   role={Roles.RECEPTION}
+                />
+                <SecureRoute
+                  path="/Surveillance"
+                  exact
+                  component={() => (
+                    <Suspense fallback={null}>
+                      <Surveillance />
+                    </Suspense>
+                  )}
+                  role={""}
                 />
                 {/* Decoupled Sample Collection Workflow - NAV-2 */}
                 {/* Use Route with render to wrap all /order/* paths in shared OrderProvider */}

@@ -24,6 +24,8 @@
     "formik": "^2.2.9",
     "formik-error-focus": "2.0.0",
     "i18next": "^21.10.0",
+    "highcharts": "^12.5.0",
+    "highcharts-react-official": "^3.2.3",
     "jsonpath-plus": "^10.4.0",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.7",

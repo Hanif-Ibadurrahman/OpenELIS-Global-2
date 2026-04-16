@@ -1,0 +1,11 @@
+CODE,TITLE,DESCRIPTION,VERSION,STATUS
+A90,Dengue fever,Dengue fever [classical dengue],ICD10_2010,active
+A91,Dengue haemorrhagic fever,Dengue haemorrhagic fever,ICD10_2010,active
+B50,Plasmodium falciparum malaria,Plasmodium falciparum malaria,ICD10_2010,active
+B51,Plasmodium vivax malaria,Plasmodium vivax malaria,ICD10_2010,active
+A92,Other mosquito-borne viral fevers,Other mosquito-borne viral fevers,ICD10_2010,active
+A92.0,Chikungunya virus disease,Chikungunya virus disease,ICD10_2010,active
+A27,Leptospirosis,Leptospirosis,ICD10_2010,active
+A27.0,Leptospirosis icterohemorrhagica,Weil's disease,ICD10_2010,active
+A27.9,Leptospirosis unspecified,Leptospirosis unspecified,ICD10_2010,active
+B90,Sequelae of tuberculosis,Sequelae of tuberculosis,ICD10_2010,active
